@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class TaxTypeSelected extends StatefulWidget {
@@ -8,16 +6,12 @@ class TaxTypeSelected extends StatefulWidget {
 }
 
 class _TaxTypeSelectedState extends State<TaxTypeSelected> {
-  List<String> options = <String>['One', 'Two', 'Free', 'Four'];
-  String dropdownValue = 'One';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      title: Text('edition'),
+        title: Text('edition'),
       ),
-
-
-      );
+    );
   }
 }
