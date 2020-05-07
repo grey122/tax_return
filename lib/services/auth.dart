@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:taxreturn/module/user.dart';
+
 
 class AuthService{
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -42,7 +42,7 @@ class AuthService{
       FirebaseUser user = result.user;
       return _userFromFirebaseUser(user);
     }
-    on PlatformException catch(e){
+     catch(e){
       print(e.toString());
       // error = e.toString();
       return null;
@@ -54,9 +54,11 @@ class AuthService{
     try{
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
+//    create a new doc for the user with uid
+  //    await DataBaseService(uid: user.uid).createUserData(' ');
       return _userFromFirebaseUser(user);
     }
-    on PlatformException catch(e){
+    catch(e){
       print(e.toString());
      // error = e.toString();
       return null;

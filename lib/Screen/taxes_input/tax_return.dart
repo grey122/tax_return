@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taxreturn/module/spinner_taxlist_item.dart';
+import 'package:taxreturn/services/database.dart';
 import 'package:taxreturn/shared/constant.dart';
+import 'package:taxreturn/module/user.dart';
+import 'package:provider/provider.dart';
+
 
 class TaxReturn extends StatefulWidget {
   @override
@@ -20,6 +24,7 @@ class _TaxReturnState extends State<TaxReturn> {
   String _selectedTaxYear = '2013 - 2014';
   String _selectedTaxMonth = 'Jan';
   String _selectedSubIndustry;
+  //database id and instance
 
 
   //enum initialization
@@ -33,6 +38,9 @@ class _TaxReturnState extends State<TaxReturn> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+    DataBaseService dataBaseService = DataBaseService(uid: user.uid);
+
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       resizeToAvoidBottomInset: true,
@@ -314,25 +322,66 @@ class _TaxReturnState extends State<TaxReturn> {
                 ],
               ),
             ),
+//            Align(
+//              alignment: Alignment.bottomRight,
+//              child: Container(
+//                margin: EdgeInsets.fromLTRB(0, 0, 10.0, 30.0),
+//                child: RaisedButton(
+//                  shape: RoundedRectangleBorder(
+//                      borderRadius: new BorderRadius.circular(15.0),
+//                      side: BorderSide(color: Colors.blueGrey)
+//                  ),
+//                  onPressed: (){
+//                    Navigator.pushNamed( context, '/taxReturnSelected', arguments:{
+//                     'taxReturnedselect': _selectedTaxType,
+//                      'taxYear': _selectedTaxYear,
+//                      'taxMonth': _selectedTaxMonth,
+//                    });
+//                  },
+//                  color: Colors.blueGrey,
+//                  child: Text(
+//                      'Next',
+//                    style: TextStyle(
+//                      color: Colors.white,
+//                      fontSize: 20.0,
+//                      letterSpacing: 2.0,
+//                    ),
+//                  ),
+//
+//                ),
+//              ),
+//            ),
             Align(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.bottomLeft,
               child: Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 10.0, 30.0),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 80.0),
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(15.0),
                       side: BorderSide(color: Colors.blueGrey)
                   ),
-                  onPressed: (){
+                  onPressed: () async{
+                    String _selectedCharacter = _character.toString();
+//                    print(_selectedCharacter);
+//                    print(_selectedTaxType);
+                     await dataBaseService.createUserData(
+                        _selectedTaxType,
+                        _selectedIndustry,
+                        _selectedSubIndustry,
+                        _selectedTaxYear,
+                        _selectedTaxMonth,
+                        _selectedCharacter,
+                    );
+                    print('database successful');
                     Navigator.pushNamed( context, '/taxReturnSelected', arguments:{
-                     'taxReturnedselect': _selectedTaxType,
+                      'taxReturnedselect': _selectedTaxType,
                       'taxYear': _selectedTaxYear,
                       'taxMonth': _selectedTaxMonth,
                     });
                   },
                   color: Colors.blueGrey,
                   child: Text(
-                      'Next',
+                    'Next',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
