@@ -19,6 +19,12 @@ class Home extends StatelessWidget {
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.red,
+          fontFamily: 'ibmPlexSerif',
+
+
+        ),
 
           initialRoute: '/',
 

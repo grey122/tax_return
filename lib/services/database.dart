@@ -38,9 +38,10 @@ class DataBaseService{
         return Tax(
           taxType: doc.data['tax_type'] ?? '',
           industry: doc.data['industry'] ?? '',
-          subIndustry: doc.data['sub_industry'] ?? '',
+          industryName: doc.data['sub_industry'] ?? '',
           taxYear: doc.data['tax_year'] ?? '',
           character: doc.data['character'] ?? '',
+          taxMonth: doc.data['tax_month'] ?? '',
         );
       }).toList();
   }

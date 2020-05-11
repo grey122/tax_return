@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const dropDownContainer = ShapeDecoration(
@@ -6,8 +7,27 @@ const dropDownContainer = ShapeDecoration(
     borderRadius: BorderRadius.all(Radius.circular(20.0)),
   ),
 );
-const textInputDecoration = InputDecoration(
 
+// font styles
+const textStyleItalicThin = TextStyle(
+  fontWeight: FontWeight.w100,
+  fontStyle: FontStyle.italic,
+  height: 1.90,
+  fontSize: 13.0,
+);
+const numberStyleMedium = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontFamily: 'iceLand',
+  letterSpacing: 1.0,
+  fontSize: 19.0,
+);
+
+const textStyleMedium = TextStyle(
+  fontWeight: FontWeight.w700,
+  letterSpacing: 2.0,
+  fontSize: 19.0,
+);
+const textInputDecoration = InputDecoration(
   fillColor: Colors.white,
   filled: true,
   enabledBorder: OutlineInputBorder(

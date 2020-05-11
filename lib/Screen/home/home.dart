@@ -16,31 +16,34 @@ class Home extends StatelessWidget {
     return StreamProvider<List<Tax>>.value(
       value: DataBaseService(uid: user.uid).taxes,
       child: Scaffold(
+        backgroundColor: Colors.brown[100],
         appBar: AppBar(
           title: Text('Home Tax Return'),
           elevation: 0.0,
           actions: <Widget>[
             FlatButton.icon(
-                onPressed: () async {
-                  await _auth.signOut();
-                },
-                icon: Icon(Icons.person),
-                label: Text('Logout'))
+              onPressed: () async {
+                await _auth.signOut();
+              },
+              icon: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              label: Text(
+                'Logout',
+                style: TextStyle(color: Colors.white),
+              ),
+            )
           ],
-
         ),
         body: TaxList(),
         floatingActionButton: FloatingActionButton(
-          onPressed:(){
+          onPressed: () {
             //TODO: please look for a way to implement transictions
-           Navigator.pushNamed(context, '/taxReturn');
-            },
-          child: Icon(Icons.add),
-          backgroundColor: Colors.green,
+            Navigator.pushNamed(context, '/taxReturn');
+          },
+          child: Icon(Icons.add, size: 35.0,),
         ),
-
-
-
       ),
     );
   }

@@ -1,7 +1,7 @@
 class Tax{
   String taxType;
   String industry;
-  String subIndustry;
+  String industryName;
   String taxYear;
   String taxMonth;
   String character;
@@ -9,7 +9,7 @@ class Tax{
   Tax({
     this.taxType,
     this.industry,
-    this.subIndustry,
+    this.industryName,
     this.taxYear,
     this.taxMonth,
     this.character
