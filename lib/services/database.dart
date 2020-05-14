@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:taxreturn/module/tax_selection_module.dart';
 
 
@@ -15,12 +16,12 @@ class DataBaseService{
 
 
   Future createUserData(
-      String taxType,
+     { String taxType,
       String industry,
       String subIndustry,
       String taxYear,
       String taxMonth,
-      String character,
+      String character,}
       ) async{
 
       return await taxDataCollection.document(uid).collection('IndividualTaxData').add({
@@ -32,6 +33,8 @@ class DataBaseService{
         'character' : character,
       });
   }
+  //user numbers Data
+
   //tax List from snapshot
   List<Tax> _taxListFromSnapshot(QuerySnapshot snapshot){
       return snapshot.documents.map((doc){
@@ -46,11 +49,47 @@ class DataBaseService{
       }).toList();
   }
 
-  //get brews stream
-  Stream<List<Tax>> get taxes {
-    return taxDataCollection.document(uid).collection('IndividualTaxData')
-        .snapshots().map(_taxListFromSnapshot);
+  Future createUserMoneyData(
+      String totalSales,
+      String netProfitBeforeTax,
+      String chargeableProfit,
+      String taxReturn,
+      String dateIssued,
 
+      ) async{
+
+    return await taxDataCollection.document(uid).collection('IndividualTaxDataMoney').add({
+      'total_sales': totalSales,
+      'net_profit_before_Tax': netProfitBeforeTax,
+      'chargeable_profit': chargeableProfit,
+      'tax_return': taxReturn,
+      'date_issued': dateIssued,
+
+    });
+  }
+  //tax List Money from snapshot
+  List<TaxMoney> _taxListMoneyFromSnapshot(QuerySnapshot snapshot){
+    return snapshot.documents.map((doc){
+      return TaxMoney(
+        totalSales: doc.data['total_sales'] ?? '',
+        netProfitBeforeTax: doc.data['net_profit_before_Tax'] ?? '',
+        chargeableProfit: doc.data['chargeable_profit'] ?? '',
+        taxReturn: doc.data['tax_return'] ?? '',
+        dateIssued: doc.data['date_issued'] ?? '',
+      );
+    }).toList();
+  }
+
+
+  //get taxDocument stream
+  Stream<List<Tax>> get taxes {
+      return taxDataCollection.document(uid).collection('IndividualTaxData')
+          .snapshots().map(_taxListFromSnapshot);
+  }
+  //get taxMoney stream
+  Stream<List<TaxMoney>> get taxesMoney {
+    return taxDataCollection.document(uid).collection('IndividualTaxDataMoney')
+        .snapshots().map(_taxListMoneyFromSnapshot);
   }
 
 }

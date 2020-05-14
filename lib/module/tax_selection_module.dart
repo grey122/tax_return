@@ -17,3 +17,20 @@ class Tax{
 
 
 }
+//taxmoney data
+
+class TaxMoney{
+  String totalSales;
+  String netProfitBeforeTax;
+  String chargeableProfit;
+  String taxReturn;
+  String dateIssued;
+
+  TaxMoney({
+    this.totalSales,
+    this.netProfitBeforeTax,
+    this.chargeableProfit,
+    this.taxReturn,
+    this.dateIssued,
+  });
+}

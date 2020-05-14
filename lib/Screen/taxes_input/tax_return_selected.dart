@@ -2,6 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:taxreturn/module/user.dart';
+import 'package:taxreturn/services/database.dart';
+import 'package:taxreturn/shared/constant.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class TaxTypeSelected extends StatefulWidget {
   @override
@@ -19,7 +24,7 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
   double capitalAllowance;
   double doublecTResult;
 
-  String calcData =  'Your mothly task for the month ';
+  String calcData = 'Your mothly task for the month ';
 
   String costOfSales = '';
   String stringChargeableProfit = '';
@@ -29,7 +34,6 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
   final myControllerTf3 = TextEditingController();
   final myControllerTf2 = TextEditingController();
   final myControllerTf4 = TextEditingController();
-
 
   @override
   void dispose() {
@@ -41,14 +45,15 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
     super.dispose();
   }
 
- void _grossProfit() {
+  void _grossProfit() {
     setState(() {
       double costOfSalesInt = double.parse(myControllerTf2.text);
       doublecTResult = totalSales - costOfSalesInt;
       costOfSales = curencyConverter(doublecTResult);
     });
   }
-  void _netProfitBeforeTasks(){
+
+  void _netProfitBeforeTasks() {
     setState(() {
       //double intCostOfSales = double.parse(costOfSales);
       double intGeneralAdminExp = double.parse(myControllerTf3.text);
@@ -56,7 +61,6 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
       stringnNetProfitBeforeTask = curencyConverter(doubleNetProfitBeforeTask);
     });
   }
-
 
   // converts double into currency
   String curencyConverter(double currencyFormat) {
@@ -73,11 +77,13 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+    DataBaseService dataBaseService = DataBaseService(uid: user.uid);
     data = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text(data['taxReturnedselect']),
+        title: Text(data['selectedTaxType']),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -124,7 +130,8 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextField(
-                    decoration: new InputDecoration(labelText: "Turn over/total Sales"),
+                    decoration:
+                        new InputDecoration(labelText: "Turn over/total Sales"),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
                       WhitelistingTextInputFormatter.digitsOnly,
@@ -166,18 +173,11 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
                       children: <Widget>[
                         Text(
                           'turnOver - cost of sale',
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 10.0,
-                            color: Colors.grey[400],
-                          ),
+                          style: textStyleItalicThin.copyWith(fontSize: 10.0),
                         ),
                         Text(
                           'Gross Profit:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 23.0,
-                          ),
+                          style: textStyleMedium.copyWith(height: 1.0),
                         ),
                       ],
                     ),
@@ -187,24 +187,10 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
                     flex: 4,
                     child: Container(
                         padding: EdgeInsets.fromLTRB(25.0, 0, 10.0, 0),
-                        decoration: ShapeDecoration(
-                          color: Colors.grey[850],
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              width: 2.0,
-                              style: BorderStyle.solid,
-                              color: Colors.black,
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)),
-                          ),
-                        ),
+                        decoration: containerBorderNumber,
                         child: Text(
                           costOfSales,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                          ),
+                          style: textStyleMedium,
                         )),
                   ),
                 ],
@@ -231,8 +217,10 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
                         setState(() {
                           //double intCostOfSales = double.parse(costOfSales);
                           double intGeneralAdminExp = double.parse(text);
-                          doubleNetProfitBeforeTask = doublecTResult - intGeneralAdminExp;
-                          stringnNetProfitBeforeTask = curencyConverter(doubleNetProfitBeforeTask);
+                          doubleNetProfitBeforeTask =
+                              doublecTResult - intGeneralAdminExp;
+                          stringnNetProfitBeforeTask =
+                              curencyConverter(doubleNetProfitBeforeTask);
                         });
                       }),
                 ],
@@ -251,17 +239,12 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
                       children: <Widget>[
                         Text(
                           'Gross profit - GAE',
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 10.0,
-                            color: Colors.grey[400],
-                          ),
+                          style: textStyleItalicThin,
                         ),
-                        Text(
-                          'Net Profit(Before Tax):',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
+                        FittedBox(
+                          child: Text(
+                            'Net Profit(Before Tax):',
+                            style: textStyleMedium.copyWith(height: 1.0),
                           ),
                         ),
                       ],
@@ -272,18 +255,7 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
                     flex: 3,
                     child: Container(
                         padding: EdgeInsets.fromLTRB(25.0, 0, 10.0, 0),
-                        decoration: ShapeDecoration(
-                          color: Colors.grey[850],
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              width: 2.0,
-                              style: BorderStyle.solid,
-                              color: Colors.black,
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)),
-                          ),
-                        ),
+                        decoration: containerBorderNumber,
                         child: Text(
                           stringnNetProfitBeforeTask,
                           style: TextStyle(
@@ -350,17 +322,12 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
                       children: <Widget>[
                         Text(
                           'turnOver - cost of sale',
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 10.0,
-                            color: Colors.grey[400],
-                          ),
+                          style: textStyleItalicThin,
                         ),
-                        Text(
-                          'Loss Brought Foward: ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
+                        FittedBox(
+                          child: Text(
+                            'Loss Brought Foward: ',
+                            style: textStyleMedium.copyWith(height: 1.0),
                           ),
                         ),
                       ],
@@ -371,18 +338,7 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
                     flex: 4,
                     child: Container(
                         padding: EdgeInsets.fromLTRB(25.0, 0, 10.0, 0),
-                        decoration: ShapeDecoration(
-                          color: Colors.grey[850],
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              width: 2.0,
-                              style: BorderStyle.solid,
-                              color: Colors.black,
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)),
-                          ),
-                        ),
+                        decoration: containerBorderNumber,
                         child: Text(
                           lossBroughtFoward,
                           style: TextStyle(
@@ -462,18 +418,11 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
                       children: <Widget>[
                         Text(
                           'turnOver - cost of sale',
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 10.0,
-                            color: Colors.grey[400],
-                          ),
+                          style: textStyleItalicThin,
                         ),
                         Text(
                           'Chargable Profit: ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
-                          ),
+                          style: textStyleMedium.copyWith(height: 1.0),
                         ),
                       ],
                     ),
@@ -483,17 +432,7 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
                     flex: 4,
                     child: Container(
                       padding: EdgeInsets.fromLTRB(25.0, 0, 10.0, 0),
-                      decoration: ShapeDecoration(
-                        color: Colors.grey[850],
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            width: 2.0,
-                            style: BorderStyle.solid,
-                            color: Colors.black,
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                        ),
-                      ),
+                      decoration: containerBorderNumber,
                       child: Text(
                         stringChargeableProfit,
                         style: TextStyle(
@@ -519,8 +458,37 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
                     setState(() {
                       double montlyTask = sumOfChargeableProfits * 50 / 100;
                       stringMontlyTask = curencyConverter(montlyTask);
+
+                      //set current date
+                      DateTime now = DateTime.now();
+                      String formattedDate =
+                          DateFormat('dd/MM/yyyy').format(now);
+                      // print(formattedDate);
+
+                      //convert total sales to int and string
+                      String stringTotalSales = curencyConverter(totalSales);
+                      //Tax Document
+                      dataBaseService.createUserData(
+                        taxType: data['selectedTaxType'],
+                        industry: data['selectedIndustry'],
+                        subIndustry: data['selectedSubIndustry'],
+                        taxYear: data['taxYear'],
+                        taxMonth: data['taxMonth'],
+                        character: data['selectedCharacter'],
+                      );
+
+                      print('creasteUserData success');
+
+                      dataBaseService.createUserMoneyData(
+                          stringTotalSales,
+                          stringnNetProfitBeforeTask,
+                          stringChargeableProfit,
+                          stringMontlyTask,
+                          formattedDate);
                     });
-                    },
+
+                    Navigator.pushReplacementNamed(context, '/home');
+                  },
                   color: Colors.black,
                   child: Text(
                     'CALCULATE',
@@ -542,7 +510,7 @@ class _TaxTypeSelectedState extends State<TaxTypeSelected> {
             Padding(
               padding: const EdgeInsets.fromLTRB(10.0, 40.0, 10.0, 40.0),
               child: Text(
-                stringMontlyTask ??  calcData ,
+                stringMontlyTask ?? calcData,
                 style: TextStyle(
                   color: Colors.grey,
                   fontStyle: FontStyle.italic,

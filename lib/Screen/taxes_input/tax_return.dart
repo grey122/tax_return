@@ -7,6 +7,7 @@ import 'package:taxreturn/module/user.dart';
 import 'package:provider/provider.dart';
 
 
+
 class TaxReturn extends StatefulWidget {
   @override
   _TaxReturnState createState() => _TaxReturnState();
@@ -45,7 +46,7 @@ class _TaxReturnState extends State<TaxReturn> {
       resizeToAvoidBottomPadding: true,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+
         title: Text(
             'Tax Return'
         ),
@@ -322,64 +323,32 @@ class _TaxReturnState extends State<TaxReturn> {
                 ],
               ),
             ),
-//            Align(
-//              alignment: Alignment.bottomRight,
-//              child: Container(
-//                margin: EdgeInsets.fromLTRB(0, 0, 10.0, 30.0),
-//                child: RaisedButton(
-//                  shape: RoundedRectangleBorder(
-//                      borderRadius: new BorderRadius.circular(15.0),
-//                      side: BorderSide(color: Colors.blueGrey)
-//                  ),
-//                  onPressed: (){
-//                    Navigator.pushNamed( context, '/taxReturnSelected', arguments:{
-//                     'taxReturnedselect': _selectedTaxType,
-//                      'taxYear': _selectedTaxYear,
-//                      'taxMonth': _selectedTaxMonth,
-//                    });
-//                  },
-//                  color: Colors.blueGrey,
-//                  child: Text(
-//                      'Next',
-//                    style: TextStyle(
-//                      color: Colors.white,
-//                      fontSize: 20.0,
-//                      letterSpacing: 2.0,
-//                    ),
-//                  ),
 //
-//                ),
-//              ),
-//            ),
             Align(
-              alignment: Alignment.bottomLeft,
+              alignment: Alignment.bottomRight,
               child: Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 80.0),
+                margin: EdgeInsets.fromLTRB(0, 20.0, 20.0, 50.0),
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(15.0),
-                      side: BorderSide(color: Colors.blueGrey)
+
                   ),
-                  onPressed: () async{
+                  onPressed: () {
                     String _selectedCharacter = _character.toString();
-//                    print(_selectedCharacter);
-//                    print(_selectedTaxType);
-                     await dataBaseService.createUserData(
-                        _selectedTaxType,
-                        _selectedIndustry,
-                        _selectedSubIndustry,
-                        _selectedTaxYear,
-                        _selectedTaxMonth,
-                        _selectedCharacter,
-                    );
+
+
                     print('database successful');
                     Navigator.pushNamed( context, '/taxReturnSelected', arguments:{
-                      'taxReturnedselect': _selectedTaxType,
+                      'selectedTaxType': _selectedTaxType,
                       'taxYear': _selectedTaxYear,
                       'taxMonth': _selectedTaxMonth,
+                      'selectedIndustry': _selectedIndustry,
+                      'selectedSubIndustry': _selectedSubIndustry,
+                      'selectedCharacter': _selectedCharacter
+
                     });
                   },
-                  color: Colors.blueGrey,
+                  color: Colors.red,
                   child: Text(
                     'Next',
                     style: TextStyle(

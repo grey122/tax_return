@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:taxreturn/module/tax_selection_module.dart';
-import 'package:taxreturn/shared/constant.dart';
-class TaxTileNumber extends StatelessWidget {
-  final Tax tax;
 
-  TaxTileNumber({this.tax});
+import 'package:taxreturn/services/database.dart';
+import 'package:taxreturn/shared/constant.dart';
+import 'package:provider/provider.dart';
+class TaxTileNumber extends StatelessWidget {
+
+  final TaxMoney taxMoney;
+
+  TaxTileNumber({this.taxMoney});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -31,10 +36,10 @@ class TaxTileNumber extends StatelessWidget {
                     Expanded(
                         child: Text(
                           'Total_Sales',
-                          style: textStyleItalicThin,
+                          style: textStyleItalicThin.copyWith(height: 2.5),
                         )),
 
-                    Expanded(child: Text(tax.industry, style: textStyleMedium)),
+                    Expanded(child: Text(taxMoney.totalSales, style: numberStyleMedium)),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -42,12 +47,12 @@ class TaxTileNumber extends StatelessWidget {
                     Expanded(
                         child: Text(
                           'Net Profit Before Tax',
-                          style: textStyleItalicThin,
+                          style: textStyleItalicThin.copyWith(height: 2.5),
                         )),
                     Expanded(
                         child: Text(
-                          tax.industryName,
-                          style: textStyleMedium,
+                          taxMoney.netProfitBeforeTax,
+                          style: numberStyleMedium,
                         )),
                     SizedBox(
                       height: 5.0,
@@ -56,11 +61,11 @@ class TaxTileNumber extends StatelessWidget {
                     Expanded(
                         child: Text(
                           'Chargable Profit',
-                          style: textStyleItalicThin,
+                          style: textStyleItalicThin.copyWith(height: 2.5),
                         )),
                     Expanded(
                         child: Text(
-                          tax.taxYear,
+                          taxMoney.chargeableProfit,
                           style: textStyleMedium,
                         )),
                     SizedBox(
@@ -74,21 +79,33 @@ class TaxTileNumber extends StatelessWidget {
 //clipRREct
                     Align(
                       alignment: Alignment.bottomLeft,
-                      child: Text(tax.taxType),
+                      child: Text(taxMoney.dateIssued),
                     )
                   ],
                 ),
+              SizedBox(width: 70.0,),
              //   Divider(height: 1,),
-                RichText(
-                  text: TextSpan(
-                    text: 'Tax Return\n',
-                      style: textStyleItalicThin.copyWith(color: Colors.black, ),
-                      children: <TextSpan>[
-                  TextSpan(text: tax.taxMonth, style: textStyleMedium.copyWith(height: 1.0)),
-                ],
-                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: FittedBox(
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Tax Return\n',
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w300,
+                            height: 1.0,
+                            fontSize: 15.0,
+                            color: Colors.black,
+                          ),
+                          children: <TextSpan>[
+                      TextSpan(text: taxMoney.taxReturn, style: numberStyleMedium.copyWith(fontSize: 40.0)),
+                    ],
+                    ),
 
 
+                    ),
+                  ),
                 ),
 
 
@@ -100,3 +117,6 @@ class TaxTileNumber extends StatelessWidget {
     );
   }
 }
+
+
+//todo how to make vertical divider
